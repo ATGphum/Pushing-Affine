@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pushing Affine</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style id="page-style">
+:root{--bg:#ffffff;--ink:#1a1a1a;--soft:#555555;--faint:#9a9a9a;--line:#e6e6e6;--chip:#f5f5f5;
+  --sans:"Figtree",-apple-system,"Helvetica Neue",Arial,sans-serif;--mono:"IBM Plex Mono",ui-monospace,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0b0b;--ink:#ececec;--soft:#a8a8a8;--faint:#6a6a6a;--line:#262626;--chip:#161616}}
+:root[data-theme="dark"]{--bg:#0b0b0b;--ink:#ececec;--soft:#a8a8a8;--faint:#6a6a6a;--line:#262626;--chip:#161616}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:var(--fs,17px);line-height:var(--lh,1.95);padding:0 20px;-webkit-font-smoothing:antialiased}
+main{max-width:1180px;margin:0 auto;padding-block:40px 120px;text-align:var(--align,center)}
+h1{font-weight:400;font-size:clamp(22px,2.4vw,28px);line-height:1.3;margin:0;text-wrap:balance;letter-spacing:-.005em}
+.author{font-family:var(--sans);font-weight:500;font-size:15px;letter-spacing:.22em;margin:14px 0 0;text-transform:uppercase;display:flex;justify-content:center;align-items:center;gap:.9em;line-height:1}
+.author .x{font-weight:300;font-size:1.25em;letter-spacing:0;line-height:1}
+.author+section{margin-top:72px}
+.mark{font-family:var(--mono);font-weight:500;font-size:22px;margin:80px 0 0;letter-spacing:.02em}
+section{margin-top:var(--sec,130px)}
+h2{font-family:var(--mono);font-weight:400;color:#fff;font-size:17px;letter-spacing:.06em;text-transform:uppercase;margin:0 0 var(--h2gap,90px);text-wrap:balance}
+p{margin:0 auto var(--pgap,27px);max-width:var(--tw,1180px);text-wrap:var(--wrap,wrap)}
+p:last-child{margin-bottom:0}
+a{color:inherit;text-decoration:underline;text-decoration-color:var(--faint);text-underline-offset:4px;overflow-wrap:anywhere}
+a:hover{text-decoration-color:var(--ink)}
+a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+.links{display:flex;flex-wrap:wrap;justify-content:center;gap:16px 20px;margin-top:2.4em;font-family:var(--mono);font-size:17px;letter-spacing:.02em}
+.links a{display:inline-flex;align-items:center;gap:16px;text-transform:uppercase;letter-spacing:.08em;font-size:15px;padding:14px 24px;border:2px solid #fff;color:#fff;text-decoration:none;line-height:1.2;transition:background .15s,color .15s}
+.links a:hover{background:#fff;color:#0b0b0b}
+.links .lbl{color:inherit}
+.links .chev{width:.72em;height:1.2em;flex:none;display:block;transition:transform .15s}
+.links a:hover .chev{transform:translateX(3px)}
+.placeholder{margin:0 auto;max-width:720px;border:1px dashed var(--line);padding:56px 24px;font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+.pull{font-size:clamp(20px,2.2vw,24px);line-height:1.6;max-width:min(820px,var(--tw,1180px));margin:0 auto var(--pgap,27px);text-wrap:balance}
+ol.posts{list-style:none;padding:0;margin:3em auto 0;max-width:1000px;display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(9,auto);column-gap:40px;font-family:var(--mono);font-size:14px;line-height:1.6;text-align:left}
+ol.posts li{border-bottom:1px solid var(--line)}
+ol.posts li:nth-child(1),ol.posts li:nth-child(10){border-top:1px solid var(--line)}
+@media (max-width:640px){ol.posts{grid-template-columns:1fr;grid-auto-flow:row;grid-template-rows:none}ol.posts li:nth-child(10){border-top:0}}
+ol.posts a{display:flex;justify-content:space-between;gap:16px;padding:14px 4px;text-decoration:none;font-variant-numeric:tabular-nums}
+ol.posts a:hover{background:var(--chip)}
+ol.posts .n{color:var(--faint)}
+ol.posts .arr{color:var(--faint)}
+footer{margin-top:160px;font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--faint);text-transform:uppercase}
+@media (max-width:640px){body{font-size:var(--fs,16px);line-height:var(--lh,1.8)}main{text-align:var(--align,left)}h1,.author,.mark,h2,footer{text-align:center}section{margin-top:var(--sec,90px)}.author+section{margin-top:56px}h2{margin-bottom:var(--h2gap,48px)}.links{justify-content:flex-start}}
+.logos{display:flex;flex-wrap:wrap;justify-content:center;align-items:flex-start;gap:32px 24px;margin:0 auto}
+.logo{margin:0;display:flex;flex-direction:column;gap:10px;width:max-content;max-width:100%}
+.logo img{height:195px;width:auto;max-width:100%;object-fit:contain;display:block;border:4px solid #fff;box-sizing:border-box}
+.logo figcaption{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:12px;letter-spacing:.04em;text-transform:uppercase}
+.logo figcaption span+span{color:var(--faint)}
+.shots{display:grid;grid-template-columns:1fr 1fr;gap:32px 40px;max-width:1000px;margin:2.4em auto 0;align-items:start}
+.shots .logo{width:100%}
+.shots .logo img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover}
+.shots+.links{display:grid;grid-template-columns:1fr 1fr;gap:16px 40px;max-width:1000px;margin:2em auto 0}
+.shots+.links a{justify-content:center;width:100%;box-sizing:border-box}
+@media (max-width:640px){.logo{width:100%}.logo img{width:100%;height:auto}.shots,.shots+.links{grid-template-columns:1fr}}
+.preview{display:block;max-width:680px;margin:2em auto 0;text-decoration:none;color:inherit}
+.preview .logo{width:100%}
+.preview .logo img{width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;transition:opacity .15s}
+.preview:hover img{opacity:.85}
+.links.medium{max-width:680px;margin-left:auto;margin-right:auto;display:grid;grid-template-columns:1fr}
+.links.medium a{justify-content:center;width:100%;box-sizing:border-box}
+h2+.pull{margin-top:calc(48px - var(--h2gap,90px));margin-bottom:48px}
+.signoff{margin-top:56px}
+p+.vids{margin-top:2.4em}
+.sublabel{font-family:var(--mono);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:#fff;margin:72px auto 28px}
+.vids{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:40px 32px;max-width:1000px;margin:0 auto;text-align:left}
+.vid{display:flex;flex-direction:column;gap:12px}
+.vid video{width:100%;aspect-ratio:16/9;object-fit:contain;background:#000;border:4px solid #fff;box-sizing:border-box;display:block}
+.vid .meta{display:flex;justify-content:space-between;gap:12px;font-family:var(--mono);font-size:13px;letter-spacing:.04em;text-transform:uppercase}
+.vid .meta span+span{color:var(--faint)}
+.note{font-family:var(--mono);font-size:13px;color:var(--faint);margin-top:2.4em;text-transform:uppercase;letter-spacing:.06em}
+.note code{font-family:inherit}
+.editbar{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center;font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;z-index:20}
+.editbar button,.edpanel button{font:inherit;letter-spacing:inherit;text-transform:inherit;background:var(--bg);color:var(--ink);border:1px solid var(--ink);padding:9px 14px;cursor:pointer}
+.editbar button.primary{background:var(--ink);color:var(--bg)}
+.editbar button:disabled{opacity:.5;cursor:default}
+.editbar button:focus-visible,.edpanel button:focus-visible,.edpanel input:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.editbar .msg{color:var(--soft);background:var(--bg);padding:4px 8px}
+.edpanel{position:fixed;top:calc(16px + env(safe-area-inset-top,0px));right:16px;bottom:calc(72px + env(safe-area-inset-bottom,0px));width:290px;overflow:auto;background:var(--bg);color:var(--ink);border:1px solid var(--line);box-shadow:0 8px 32px rgba(0,0,0,.18);z-index:19;padding:16px;display:flex;flex-direction:column;gap:20px;font-family:var(--mono);font-size:12px;line-height:1.4;text-align:left;letter-spacing:.02em}
+.edpanel[hidden]{display:none!important}
+.edgroup{display:flex;flex-direction:column;gap:12px}
+.edh{text-transform:uppercase;letter-spacing:.08em;color:var(--faint);display:flex;justify-content:space-between;gap:8px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.edh b{font-weight:500;color:var(--ink);text-transform:none;letter-spacing:0}
+.edrow{display:flex;flex-direction:column;gap:6px}
+.edrow>span{display:flex;justify-content:space-between}
+.edrow b{font-weight:400;color:var(--soft);font-variant-numeric:tabular-nums}
+.edrow input[type=range]{width:100%;accent-color:currentColor}
+.seg{display:flex}
+.seg button{flex:1;padding:6px 4px;font-size:11px;text-transform:none;letter-spacing:0;border-color:var(--line)}
+.seg button+button{border-left:0}
+.seg button.on{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.edcheck{display:flex;gap:8px;align-items:center}
+.edlink{border:0!important;padding:0!important;text-decoration:underline;align-self:flex-start;color:var(--soft)!important;text-transform:none!important;letter-spacing:0!important}
+.edbtns{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+.edbtns button{padding:7px 6px;font-size:11px;text-transform:none;letter-spacing:0;border-color:var(--line)}
+.edbtns button:first-child{grid-column:1/-1}
+.edbtns .danger{color:#c0392b}
+.edtip{color:var(--faint);margin:0;font-size:11px;max-width:none}
+body.editing{padding-right:330px}
+body.editing main :focus{outline:none}
+body.editing main .ed-sel{outline:1px dashed var(--soft);outline-offset:6px}
+@media (max-width:760px){body.editing{padding-right:20px;padding-bottom:52vh}.edpanel{top:auto;left:0;right:0;bottom:0;width:auto;max-height:48vh;border-width:1px 0 0}.editbar{bottom:calc(48vh + 12px)}}
+</style>
+<style id="user-vars"></style>
+</head>
+<body>
+<main>
+  <h1>Pushing Affine: Brand, Product &amp; Awareness</h1>
+  <p class="author"><span>Scout</span><span class="x" aria-label="and">&times;</span><span>Jeremy</span></p>
+
+  <section>
+    <h2>00/ Origins</h2>
+    <p>Initially we simply were Affine community members who looked for a space to chat in regarding the subnet, noticed there were none, and made the Affinites Telegram. This was around when Scout made his first Affine related video, just for fun. This led to Cister having a request for another video project soon and us both getting into contact with Terence / Jiyu, with whom we had hella chats about Affine's potential to change the frontier landscape and the necessity of having intelligence in an open &amp; commoditized form. We just were kinda in awe once we realized what Affine was all about and its envisioned role in the ecosystem (ideally). Around that time Cister got reassigned to Ninja and we were back to theorizing about Affine's potential and noticed that the X would deserve some more attention, content and design wise. We had so much fun discussing potential post concepts and overall branding around Affine in general. We also started sending out suggestions to Tobias directly in an effort to somehow contribute, and made another video on the side to spread Affine in an epic kind of way.</p>
+    <p>We got introduced via Terence / Cycadmemoires / Jiyuu as we were all Affine maxis and heard that the China team would appreciate some help with marketing, branding and/or design. It felt like a perfect fit and we just went to work, re-concepting a brand language for Affine, but more importantly getting familiar with what LOGOS was all about and how we needed a full branding structure around it. So the initial idea to help with tweets soon turned into full branding, community management on the new LOGOS Discord and even a large amount of product management, with us becoming in charge of LOGOS' actual product and use cases: how the UX went down, navigation, interface and functionality.</p>
+    <p>Back then the team experienced a lot of internal restructuring. Nick was in the process of building out a workflow where he could constantly give us a stream of raw materials for us to package up and post, but we soon after learned about his self mining, which rendered the former part obsolete. We ended up having to do our own research into what kind of marketing Affine itself needed by studying the incentive mechanism and where the holes in our marketing were. When the incentive mechanism changed substantially, much of the marketing direction we had been developing around the previous mechanism had to be kicked down the road. We pulled back, studied the new Reason/distillation competition in depth, and rebuilt the positioning around what we believed would help Affine under the new mechanism. Despite how much of a whirlwind it was, it was extremely enjoyable to the both of us. It felt like we had found our calling, pushing Affine where we could, and it felt extremely incentive aligning. Lots of 3am nights just brainstorming things.</p>
+  </section>
+
+  <section>
+    <h2>01/ Design Language</h2>
+    <p>Initially, we were tasked by Nick to make some consistent design language files for marketing. This is an initial version, containing the design language, philosophy/rationale, website/dashboard concepts and logos.</p>
+    <p>The Nick situation sadly disrupted that part, but it gave us a good direction we continued to implement into LOGOS workflow wise. We'd carefully claim that we have progressed quite a bit since then in terms of the feel for design, what works and what doesn't. As there were quite a bit of chaotic moments within the team structure we sometimes were a bit bound by the environment in terms of having clear direction. We did grow from it tho so there certainly was a learning experience to it.</p>
+    <div class="logos shots">
+      <figure class="logo"><img src="shots/ds-overview.jpg" alt="Affine Design System page: 'Black field, white theorem, gold validation' principle" width="1600" height="1000"><figcaption><span>Design system</span><span>Principle</span></figcaption></figure>
+      <figure class="logo"><img src="shots/ds-colors.jpg?v=2" alt="Affine Design System colour tokens: whites, gold validation and semantic colours with hex values" width="1600" height="1000"><figcaption><span>Design system</span><span>Colour tokens</span></figcaption></figure>
+    </div>
+    <div class="links">
+      <a href="https://atgphum.github.io/affine-design-language/" target="_blank" rel="noopener"><span class="lbl">Live design presentation</span><svg class="chev" viewBox="0 0 12 20" aria-hidden="true"><polyline points="2.5,2.5 9.5,10 2.5,17.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg></a>
+      <a href="https://github.com/ATGphum/affine-design-language" target="_blank" rel="noopener"><span class="lbl">Repository</span><svg class="chev" viewBox="0 0 12 20" aria-hidden="true"><polyline points="2.5,2.5 9.5,10 2.5,17.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg></a>
+    </div>
+    <p class="sublabel">Alternative logos</p>
+    <div class="logos">
+      <figure class="logo"><img src="logos/affine-wordmark.jpg" alt="Alternative Affine wordmark with a halftone, chromatic-offset treatment" width="2000" height="900"><figcaption><span>Wordmark</span><span>Affine · alternative</span></figcaption></figure>
+      <figure class="logo"><img src="logos/affine-symbol.jpg" alt="Alternative Affine symbol: circle, triangle and inner circle in a halftone, chromatic-offset treatment" width="1442" height="742"><figcaption><span>Symbol</span><span>Affine · alternative</span></figcaption></figure>
+      <figure class="logo"><img src="logos/affine-symbol-gold.jpg" alt="Alternative Affine symbol in gold, rendered as glowing concentric line work" width="1179" height="760"><figcaption><span>Symbol</span><span>Gold · alternative</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section>
+    <h2>02/ LOGOS Product Design &amp; Design-to-Engineering Workflow</h2>
+    <p>In terms of LOGOS, which was the user facing harness, this was where a large amount of hours of work went into. When we joined the team, LOGOS, at the time called Affent, was very raw. We essentially designed and conceptualised LOGOS, and its underlying design language, from the ground up. We had many discussions regarding the product, positioning, moat and features. We gladly ended up being delegated most of the appearance / UX / design / concept / product management of LOGOS while Tobias could work on the harness itself.</p>
+    <p>As the product developed, we found that the normal design-to-implementation loop wasn't reliably preserving the intended experience. Designs would often diverge during implementation, feedback loops with the team were slow, and there wasn't a consistent way for us to verify that what shipped matched what had been designed.</p>
+    <p>Rather than continuing to rely on static handoffs, we learned the GitHub workflow and built our own design-to-engineering pipeline. This gave us much more ownership over the fidelity of the product.</p>
+    <div class="logos shots">
+      <figure class="logo"><img src="shots/logos-app.jpg" alt="LOGOS app home screen: LOGOS wordmark with the brush-circle symbol above a 'Think out loud' prompt bar" width="1600" height="1000"><figcaption><span>LOGOS app</span><span>Home</span></figcaption></figure>
+      <figure class="logo"><img src="shots/logos-landing.jpg" alt="LOGOS landing page: 'Sufficiently advanced technology is indistinguishable from nature' above four nature-image feature cards" width="1600" height="1000"><figcaption><span>LOGOS site</span><span>Landing page</span></figcaption></figure>
+    </div>
+    <div class="links">
+      <a href="https://atgphum.github.io/logos-design/" target="_blank" rel="noopener"><span class="lbl">LOGOS mockup</span><svg class="chev" viewBox="0 0 12 20" aria-hidden="true"><polyline points="2.5,2.5 9.5,10 2.5,17.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg></a>
+      <a href="https://github.com/ATGphum/logos-design" target="_blank" rel="noopener"><span class="lbl">LOGOS design repository</span><svg class="chev" viewBox="0 0 12 20" aria-hidden="true"><polyline points="2.5,2.5 9.5,10 2.5,17.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg></a>
+    </div>
+  </section>
+
+  <section>
+    <h2>03/ Videos</h2>
+    <p>Videos in themselves were also a learning curve, from a bit messy and raw fun-projects to ones with a real lean goal in mind like the most recent one (05), fully intended on spreading awareness to “Trad AI ML talent”. There's many new angles that came with the most recent Video to make the Affine mining opportunity more digestible and understood.</p>
+    <div class="vids">
+      <div class="vid"><video controls playsinline preload="metadata" poster="videos/posters/video-01.jpg?v=2"><source src="videos/video-01.mp4" type="video/mp4"></video><span class="meta"><span>Video 01</span><span>0:22</span></span></div>
+      <div class="vid"><video controls playsinline preload="metadata" poster="videos/posters/video-02.jpg?v=2"><source src="videos/video-02.mp4" type="video/mp4"></video><span class="meta"><span>Video 02</span><span>1:05</span></span></div>
+      <div class="vid"><video controls playsinline preload="metadata" poster="videos/posters/video-03.jpg?v=2"><source src="videos/video-03.mp4" type="video/mp4"></video><span class="meta"><span>Video 03</span><span>0:47</span></span></div>
+      <div class="vid"><video controls playsinline preload="metadata" poster="videos/posters/video-04.jpg?v=2"><source src="videos/video-04.mp4" type="video/mp4"></video><span class="meta"><span>Video 04</span><span>0:58</span></span></div>
+      <div class="vid"><video controls playsinline preload="metadata" poster="videos/posters/video-05.jpg?v=2"><source src="videos/video-05-web.mp4" type="video/mp4"></video><span class="meta"><span>Video 05</span><span>1:54</span></span></div>
+      <div class="vid"><video controls playsinline preload="metadata" poster="videos/posters/video-09.jpg?v=2"><source src="videos/video-09.mp4" type="video/mp4"></video><span class="meta"><span>Video 06</span><span>2:20</span></span></div>
+    </div>
+    <p class="note">View in here or for full quality within video folder in zip.</p>
+  </section>
+
+  <section>
+    <h2>04/ Medium &amp; Side Quests</h2>
+    <p>We also enjoy taking on any “uncategorized” work. Be it forwarding opportunities like KAGGLE or simply doing a dinner guestlist, being in contact with in-eco teams like Etienne &amp; Victor regarding the exploit or running community management like on the now deprecated LOGOS Discord or potentially Affine related Reddit / Discord communities in the future. We intended to also begin marketing on Medium, and get our voice heard by serious AI researchers. We have an initial unposted Medium article here:</p>
+    <a class="preview" href="https://atgphum.github.io/affine-medium-preview/" target="_blank" rel="noopener"><figure class="logo"><img src="shots/medium-preview.jpg" alt="Preview of the unposted Medium article 'A Model Should Have to Win'" width="1600" height="920"><figcaption><span>Medium article</span><span>Draft for review</span></figcaption></figure></a>
+    <div class="links medium" style="margin-top:1em"><a href="https://atgphum.github.io/affine-medium-preview/" target="_blank" rel="noopener"><span class="lbl">Medium article preview</span><svg class="chev" viewBox="0 0 12 20" aria-hidden="true"><polyline points="2.5,2.5 9.5,10 2.5,17.5" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/></svg></a></div>
+  </section>
+
+  <section>
+    <h2>05/ X Posts</h2>
+    <p class="pull">Affine, like every other subnet, is only as good as its miners. We view the gap of awareness and understanding regarding Affine and Bittensor in general as the bottleneck.</p>
+    <p>The angle we had just started implementing was to position Affine as an intellectually interesting, live public technical competition anyone could join for big prizes, because really the model and incentive mechanism is the product, and as the quality of miners improves, so does the product. The model comes first. Miners receive over $40k USD per week for having a champion model. A cracked AI researcher from a big lab wouldn't come to mine Affine because the weekly reward is 100k instead of 40k. The gap is in awareness that this incentive is even available to them.</p>
+    <p>The X marketing angle we finally arrived at was to communicate updates to things like the incentive mechanism and transparently show the state of competitions, achievements and exploits, so that anyone at all technical would find it interesting, serious, and incentivising, even if it might resonate less with a non-technical investor.</p>
+    <ol class="posts" id="posts"></ol>
+  </section>
+
+  <section>
+    <h2>06/ Conclusion</h2>
+    <p class="pull">We love it here at Affine. It gave us a real sense of purpose and something to look forward for when waking up in the sense of having a new shot at contributing something to a larger whole. We're obviously not perfect, but try our best to adapt and adjust to whatever we're given. Be it feedback and or the need to become better and more aligned with each and every day. We really, really, really wanna keep pushing Affine, especially with you Const and any other like minded people potentially joining in the future. We believe in the achieving of a Goodhart-resistant IM, and want to help to push awareness to the other side of what makes Affine, Affine and with that Bittensor, Bittensor :)</p>
+    <p class="pull signoff">pushing ⴷ.<br>pushing τ.</p>
+  </section>
+</main>
+<script id="posts-js">
+const ids="2068704533233168573 2069810780019491188 2069838159970701683 2070561177319686457 2081721214439964818 2082861540534026710 2084173442816114843 2085698444346216834 2087957548578001177 2091498650119901215 2091858071824011444 2092220841933328675 2092583256030105880 2093008057261609231 2093401028763013596 2094801103959540005 2095937147320844533 2096984627059810338".split(" ");
+document.getElementById("posts").innerHTML=ids.map((id,i)=>`<li><a href="https://x.com/affine_io/status/${id}" target="_blank" rel="noopener"><span><span class="n">${String(i+1).padStart(2,"0")}/</span> @affine_io · ${id.slice(-6)}</span><span class="arr">↗</span></a></li>`).join("");
+</script>
+</body>
+</html>
